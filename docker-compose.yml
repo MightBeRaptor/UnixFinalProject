@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    volumes:
+      - db_data:/data
+    container_name: sqlite-db
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DB_PATH: /data/mydatabase.db
+    volumes:
+      - db_data:/data
+    container_name: flask-app
+
+volumes:
+  db_data:
