@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template
 import sqlite3
 import os
 
@@ -17,7 +17,7 @@ def index():
     cursor.execute("SELECT message FROM greetings LIMIT 1")
     result = cursor.fetchone()
     conn.close()
-    return jsonify(message=result["message"])
+    return render_template("index.html", message=result["message"])
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
