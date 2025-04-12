@@ -2,12 +2,16 @@ version: '3.8'
 
 services:
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile.db
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
     volumes:
-      - db_data:/data
-    container_name: sqlite-db
+      - db_data:/var/lib/mysql
     networks:
       - app_net
 
@@ -16,9 +20,13 @@ services:
       context: .
       dockerfile: Dockerfile.app
     environment:
-      DB_PATH: /data/mydatabase.db
-    volumes:
-      - db_data:/data:ro
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: mydb
+      DB_USER: user
+      DB_PASSWORD: userpass
+    depends_on:
+      - db
     networks:
       - app_net
     deploy:
