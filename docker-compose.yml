@@ -2,26 +2,34 @@ version: '3.8'
 
 services:
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile.db
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: mydb         # creates database on startup
+      MYSQL_USER: user             # creates user
+      MYSQL_PASSWORD: userpass     # sets user's password
+    ports:
+      - "3306:3306"
     volumes:
-      - db_data:/data
-    container_name: sqlite-db
+      - db_data:/var/lib/mysql
 
   web:
     build:
       context: .
       dockerfile: Dockerfile.app
+    container_name: flask-app
     ports:
       - "5000:5000"
+    environment:
+      DB_HOST: db                 # refers to 'db' service
+      DB_PORT: 3306
+      DB_NAME: mydb
+      DB_USER: user
+      DB_PASSWORD: userpass
     depends_on:
       - db
-    environment:
-      DB_PATH: /data/mydatabase.db
-    volumes:
-      - db_data:/data
-    container_name: flask-app
 
 volumes:
   db_data:

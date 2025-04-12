@@ -1,9 +1,0 @@
-FROM python:3.13-slim
-
-WORKDIR /app
-COPY db/init_db.py init_db.py
-
-# Create shared volume mount point
-VOLUME ["/data"]
-
-CMD ["python", "init_db.py"]
