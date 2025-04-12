@@ -7,29 +7,47 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: mydb         # creates database on startup
-      MYSQL_USER: user             # creates user
-      MYSQL_PASSWORD: userpass     # sets user's password
-    ports:
-      - "3306:3306"
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - app_net
 
   web:
     build:
       context: .
       dockerfile: Dockerfile.app
-    container_name: flask-app
-    ports:
-      - "5000:5000"
     environment:
-      DB_HOST: db                 # refers to 'db' service
+      DB_HOST: db
       DB_PORT: 3306
       DB_NAME: mydb
       DB_USER: user
       DB_PASSWORD: userpass
     depends_on:
       - db
+    networks:
+      - app_net
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-lb
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - app_net
 
 volumes:
   db_data:
+
+networks:
+  app_net:
