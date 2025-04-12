@@ -1,10 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MySQL Flask App</title>
+    <title>MySQL Flask App</title>
 </head>
 <body>
-  <h1>Flask App with MySQL</h1>
-  <p>{{ message }}</p>
+    <h1>Flask App with MySQL</h1>
+
+    <h2>Users Table</h2>
+    <table border="1">
+        <tr>
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.user_id }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Roles Table</h2>
+    <table border="1">
+        <tr>
+            <th>Role ID</th>
+            <th>Role</th>
+        </tr>
+        {% for role in roles %}
+        <tr>
+            <td>{{ role.role_id }}</td>
+            <td>{{ role.role }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>User Roles Table</h2>
+    <table border="1">
+        <tr>
+            <th>User ID</th>
+            <th>Role ID</th>
+        </tr>
+        {% for user_role in user_roles %}
+        <tr>
+            <td>{{ user_role.user_id }}</td>
+            <td>{{ user_role.role_id }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>User Roles Table Agg</h2>
+    <table border="1">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Role(s)</th>
+        </tr>
+        {% for user_role in user_roles_agg %}
+        <tr>
+            <td>{{ user_role.first_name }}</td>
+            <td>{{ user_role.last_name }}</td>
+            <td>{{ user_role.roles }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

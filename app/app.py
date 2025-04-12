@@ -34,30 +34,95 @@ def get_db_connection():
 def index():
     try:
         conn = get_db_connection()
-        cursor = conn.cursor()
+        c = conn.cursor(dictionary=True)
 
-        # Create table if it doesn't exist
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS greetings (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                message TEXT
+        # Drop all tables
+        c.execute("DROP TABLE IF EXISTS user_roles")  # Clear existing table
+        c.execute("DROP TABLE IF EXISTS users")  # Clear existing table
+        c.execute("DROP TABLE IF EXISTS roles")
+
+        # CREATE & INSERT
+        # users
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INT AUTO_INCREMENT PRIMARY KEY,
+                first_name VARCHAR(100),
+                last_name VARCHAR(100)
+            )
+        """)
+        c.execute("INSERT INTO users (first_name, last_name) VALUES ('Hunter', 'Doe')")  # 1
+        c.execute("INSERT INTO users (first_name, last_name) VALUES ('Ethan', 'Doe')")   # 2
+        c.execute("INSERT INTO users (first_name, last_name) VALUES ('Eli', 'Doe')")     # 3
+        c.execute("INSERT INTO users (first_name, last_name) VALUES ('Jill', 'Doe')")    # 4
+
+        # roles
+        c.execute("DROP TABLE IF EXISTS roles")
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS roles (
+                role_id INT AUTO_INCREMENT PRIMARY KEY,
+                role VARCHAR(255)
+            )
+        """)
+        c.execute("INSERT INTO roles (role) VALUES ('admin')")   # 1
+        c.execute("INSERT INTO roles (role) VALUES ('agent')")   # 2
+        c.execute("INSERT INTO roles (role) VALUES ('janitor')") # 3
+
+        # user_roles (many-to-many)
+        c.execute("DROP TABLE IF EXISTS user_roles")
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS user_roles (
+                user_id INT,
+                role_id INT,
+                PRIMARY KEY (user_id, role_id),
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+                FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE
             )
         """)
 
-        # Insert a default message if table is empty
-        cursor.execute("SELECT COUNT(*) FROM greetings")
-        count = cursor.fetchone()[0]
-        if count == 0:
-            cursor.execute("INSERT INTO greetings (message) VALUES ('Hello from MySQL!')")
-            conn.commit()
+        c.execute("INSERT INTO user_roles (user_id, role_id) VALUES (1, 1)")  # hunter, admin
+        c.execute("INSERT INTO user_roles (user_id, role_id) VALUES (1, 2)")  # hunter, agent
+        c.execute("INSERT INTO user_roles (user_id, role_id) VALUES (2, 3)")  # ethan, janitor
+        c.execute("INSERT INTO user_roles (user_id, role_id) VALUES (3, 2)")  # eli, agent
+        c.execute("INSERT INTO user_roles (user_id, role_id) VALUES (4, 1)")  # jill, admin
+        c.execute("INSERT INTO user_roles (user_id, role_id) VALUES (4, 2)")  # jill, agent
 
-        # Now fetch the message
-        cursor.execute("SELECT message FROM greetings LIMIT 1")
-        row = cursor.fetchone()
-        message = row[0] if row else "No message found."
+        c.execute("SELECT * FROM users")
+        users = c.fetchall()
 
+        c.execute("SELECT * FROM roles")
+        roles = c.fetchall()
+
+        c.execute("SELECT * FROM user_roles")
+        user_roles = c.fetchall()
+
+        c.execute("""
+                    SELECT 
+                        u.first_name, 
+                        u.last_name, 
+                        GROUP_CONCAT(r.role SEPARATOR ', ') AS roles
+                    FROM 
+                        users u
+                    JOIN 
+                        user_roles ur ON u.user_id = ur.user_id
+                    JOIN 
+                        roles r ON r.role_id = ur.role_id
+                    GROUP BY 
+                        u.user_id, u.first_name, u.last_name
+        """)
+        user_roles_agg = c.fetchall()
+
+        conn.commit()
         conn.close()
-        return render_template("index.html", message=message)
+
+        # Pass data to index.html
+        return render_template(
+            "index.html", 
+            users=users, 
+            roles=roles, 
+            user_roles=user_roles, 
+            user_roles_agg=user_roles_agg
+            )
+    
     except Exception as e:
         print("ERROR:", e)
         return "Internal Server Error", 500
