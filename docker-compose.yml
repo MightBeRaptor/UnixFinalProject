@@ -11,7 +11,7 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: userpass
     volumes:
-      - /mnt/db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     networks:
       - app_net
 
