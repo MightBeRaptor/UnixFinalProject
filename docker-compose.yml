@@ -48,6 +48,11 @@ services:
 
 volumes:
   db_data:
+    driver: local
+    driver_opts:
+      type: None
+      device: /mnt/docker/data/mysql
+      o: bind
 
 networks:
   app_net:
