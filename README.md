@@ -2,12 +2,9 @@
 Final Project for System Administration using Unix Class utilizing GCP and Docker
 
 ## Setup
-1. Install and launch [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-2. Run `docker-compose up --build --scale web=3` or add the 'Docker' and 'Dev Containers' extensions to Visual Studio Code, right click `docker-compose.yml` and select `Compose Up`
-3. Open `localhost:80` in your favorite browser
-
-## Launching on the GCP Network
-1. Run `cd UnixFinalProject` to open the project
-2. Run `git pull` to pull the newest version
-3. Run `docker-compose up --build --scale web=3` to launch the website
-4. Open website via the GCP VM's External IP Address
+This is designed to be ran on a Google Cloud Platform (GCP) ubuntu Virtual Machine. Functionality may or may not differ when ran locally.
+1. Clone this repository with `git clone git@github.com:MightBeRaptor/UnixFinalProject.git`
+2. Run `cd UnixFinalProject` to open the git repository's directory
+3. Run `scripts/setup.sh` which will install all dependencies (Docker, LVM) and launch docker
+4. Run `scripts/launch.sh` which will compose down existing containers (if previously ran) and compose up 3 copies of the application.
+5. Open url `<vm's-external-ip>` in your favorite browser
