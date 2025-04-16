@@ -17,7 +17,7 @@ services:
 
   web:
     build:
-      context: .
+      context: ./src/app
       dockerfile: Dockerfile.app
     environment:
       DB_HOST: db
@@ -42,7 +42,7 @@ services:
     depends_on:
       - web
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./src/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
       - app_net
 
@@ -50,7 +50,7 @@ volumes:
   db_data:
     driver: local
     driver_opts:
-      type: None
+      type: none
       device: /mnt/docker/data/mysql
       o: bind
 
