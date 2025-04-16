@@ -3,7 +3,6 @@ version: '3.8'
 services:
   db:
     image: mysql:8
-    container_name: mysql-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
@@ -16,9 +15,7 @@ services:
       - app_net
 
   web:
-    build:
-      context: ./src/app
-      dockerfile: Dockerfile.app
+    image: mywebapp:latest
     environment:
       DB_HOST: db
       DB_PORT: 3306
@@ -36,7 +33,6 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: nginx-lb
     ports:
       - "80:80"
     depends_on:
