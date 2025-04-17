@@ -6,6 +6,6 @@ sleep 5
 
 docker build -t mywebapp:latest -f ./src/app/Dockerfile.app ./src/app # Build image
 
-sleep 5
+sleep 10
 
 docker stack deploy -c stack.yml mystack # Start stack
