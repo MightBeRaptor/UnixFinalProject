@@ -50,4 +50,3 @@ fi
 
 # Log output
 echo "$output_str" > "$REPO_PATH/logs/scale.log"
-echo "$output_str"
