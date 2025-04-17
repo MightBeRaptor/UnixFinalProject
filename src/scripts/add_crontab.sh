@@ -1,9 +1,23 @@
 #!/bin/bash
 
+# Load environment variables from .env
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+else
+    echo ".env file not found."
+    exit 1
+fi
+
+# Ensure REPO_PATH is set
+if [ -z "$REPO_PATH" ]; then
+    echo "REPO_PATH variable is not set in .env."
+    exit 1
+fi
+
 # Define script paths
-COLLECT_SCRIPT="/home/master/UnixFinalProject/src/scripts/get_metrics.sh"
-SCALE_SCRIPT="/home/master/UnixFinalProject/src/scripts/scale.sh"
-CRON_LINE="*/2 * * * * /bin/bash $COLLECT_SCRIPT && /bin/bash $SCALE_SCRIPT"
+METRICS_SCRIPT="$REPO_PATH/src/scripts/get_metrics.sh"
+SCALE_SCRIPT="$REPO_PATH/src/scripts/scale.sh"
+CRON_LINE="*/2 * * * * /bin/bash $METRICS_SCRIPT && /bin/bash $SCALE_SCRIPT"
 
 # Backup current crontab if it exists
 CRONTAB_CONTENT=$(crontab -l 2>/dev/null)
