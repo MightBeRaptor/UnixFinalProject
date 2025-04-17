@@ -6,6 +6,8 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+REPO_PATH="$1"
+
 # Ensure stack is running
 if ! docker stack ls | grep -q mystack; then
     echo "Stack 'mystack' is not running. Exiting."
