@@ -17,8 +17,7 @@ fi
 # Define script paths
 METRICS_SCRIPT="$REPO_PATH/src/scripts/get_metrics.sh"
 SCALE_SCRIPT="$REPO_PATH/src/scripts/scale.sh"
-CRON_LINE="*/2 * * * * /bin/bash $METRICS_SCRIPT \"$REPO_PATH\""
-CRON_LINE="*/2 * * * * /bin/bash $SCALE_SCRIPT \"$REPO_PATH\""
+CRON_LINE="*/2 * * * * /bin/bash $METRICS_SCRIPT \"$REPO_PATH\"\n*/2 * * * * /bin/bash $SCALE_SCRIPT \"$REPO_PATH\""
 
 # Backup current crontab if it exists
 CRONTAB_CONTENT=$(crontab -l 2>/dev/null)
