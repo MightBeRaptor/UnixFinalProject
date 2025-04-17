@@ -18,6 +18,11 @@ fi
 mkdir -p "$REPO_PATH/data"  # Ensure data directory exists
 touch "$METRICS_FILE"       # Create the metrics file if it doesn't exist
 
+# Clear and recreate log
+mkdir -p "$REPO_PATH/logs"  # Ensure logs directory exists
+rm -f "$REPO_PATH/logs/script_output.log"  # Remove old log file
+touch "$REPO_PATH/logs/script_output.log"  # Create new log file
+
 # Get all container IDs for the web service
 containers=$(docker ps --filter "name=mystack_web" --format "{{.ID}}")
 
@@ -46,8 +51,8 @@ fi
 echo "$avg" > "$METRICS_FILE"
 
 # Run scale.sh
-bash "$REPO_PATH/src/scripts/scale.sh \"$REPO_PATH\""
+bash "$REPO_PATH/src/scripts/scale.sh \"$REPO_PATH\" >> \"$REPO_PATH\"/logs/script_output.log 2>&1"
 if [ $? -ne 0 ]; then
-    echo "Failed to run scale.sh"
+    echo "Failed scale.sh"
     exit 1
 fi

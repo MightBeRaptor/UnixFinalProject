@@ -25,6 +25,8 @@ fi
 # Read and validate average CPU usage
 avg=$(cat "$METRICS_FILE")
 
+num_replicas=0
+
 # Apply scaling logic
 if [ "$avg" -gt 70 ]; then
     num_replicas=6
@@ -42,5 +44,9 @@ else
     echo "CPU usage ${avg}% within acceptable range. No scaling needed."
 fi
 
+if [ "$num_replicas" -eq 0 ]; then
+    echo "No scaling action taken due to an average CPU usage of $avg."
+    exit 0
+fi
+
 echo "Successfully autoscaled to $num_replicas replicas due to an average CPU usage of $avg."
-exit 1 # logging purposes for now
