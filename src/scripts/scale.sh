@@ -48,8 +48,3 @@ if [ "$num_replicas" -eq 0 ]; then
     echo "No scaling action taken due to an average CPU usage of $avg."
     exit 0
 fi
-
-# Log output
-output_str="Successfully autoscaled to $num_replicas replicas due to an average CPU usage of $avg."
-echo "$output_str" > "$REPO_PATH/data/scale.log"
-echo "$output_str"
