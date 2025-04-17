@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Load environment variables from .env
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+else
+    echo ".env file not found."
+    exit 1
+fi
+
+# Ensure REPO_PATH is set
+if [ -z "$REPO_PATH" ]; then
+    echo "REPO_PATH variable is not set in .env."
+    exit 1
+fi
+
 # Ensure stack is running
 if ! docker stack ls | grep -q mystack; then
     echo "Stack 'mystack' is not running. Exiting."
@@ -12,7 +26,7 @@ if [ ! -f data/metrics.txt ]; then
     exit 1
 fi
 
-avg=$(cat data/metrics.txt)
+avg=$(cat $REPO_PATH/data/metrics.txt)
 
 # Apply scaling logic
 if [ "$avg" -gt 70 ]; then
@@ -26,3 +40,6 @@ elif [ "$avg" -gt 40 ]; then
 else
     echo "CPU usage ${avg}% within acceptable range. No scaling needed."
 fi
+
+echo "Success!"
+exit 1 # logging purposes for now

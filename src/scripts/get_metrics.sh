@@ -26,7 +26,7 @@ count=0
 
 for container in $containers; do
     # Get CPU usage for each container
-    cpu=$(docker stats --no-stream --format "{{.CPUPerc}}" "$container" | cut -d'.' -f1 | tr -d '%')
+    cpu=$(docker stats --no-stream --format "{{.CPUPerc}}" "$container" | cut -d'.' -f1 | tr -d '%') # reformat i.e. 5.01% to 5
 
     # Ensure its a valid number, add to total
     if [[ "$cpu" =~ ^[0-9]+$ ]]; then
