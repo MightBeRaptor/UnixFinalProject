@@ -1,12 +1,22 @@
 #!/bin/bash
 
+# Ensure REPO_PATH is passed as an argument
+if [ -z "$1" ]; then
+  echo "Usage: $0 <REPO_PATH>"
+  exit 1
+fi
+
+REPO_PATH="$1"
+METRICS_FILE="$REPO_PATH/data/metrics.txt"
+
 # Ensure mystack is running
 if ! docker stack ls | grep -q mystack; then
   echo "Stack 'mystack' is not running. Exiting."
   exit 1
 fi
 
-touch data/metrics.txt # Create the metrics file if it doesn't exist
+mkdir -p "$REPO_PATH/data"  # Ensure data directory exists
+touch "$METRICS_FILE"       # Create the metrics file if it doesn't exist
 
 # Get all container IDs for the web service
 containers=$(docker ps --filter "name=mystack_web" --format "{{.ID}}")
@@ -17,7 +27,7 @@ count=0
 for container in $containers; do
     # Get CPU usage for each container
     cpu=$(docker stats --no-stream --format "{{.CPUPerc}}" "$container" | cut -d'.' -f1 | tr -d '%')
-    
+
     # Ensure its a valid number, add to total
     if [[ "$cpu" =~ ^[0-9]+$ ]]; then
         total=$((total + cpu))
@@ -32,6 +42,5 @@ else
     avg=0
 fi
 
-# data dir will be created by scale.sh
-# output to file
-echo "$avg" > data/metrics.txt
+# Output to metrics file
+echo "$avg" > "$METRICS_FILE"
