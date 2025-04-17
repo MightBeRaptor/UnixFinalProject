@@ -40,16 +40,14 @@ elif [ "$avg" -gt 50 ]; then
 elif [ "$avg" -gt 40 ]; then
     num_replicas=3
     docker service scale mystack_web=3
-else
-    echo "CPU usage ${avg}% within acceptable range. No scaling needed."
 fi
 
 if [ "$num_replicas" -eq 0 ]; then
-    output_str="No scaling action taken. CPU usage is within acceptable range."
+    output_str="No scaling action taken. CPU usage of $avg is within acceptable range."
 else
     output_str="Successfully autoscaled to $num_replicas replicas due to an average CPU usage of $avg."
 fi
 
 # Log output
-echo "$output_str" > "$REPO_PATH/data/scale.log"
+echo "$output_str" > "$REPO_PATH/logs/scale.log"
 echo "$output_str"
