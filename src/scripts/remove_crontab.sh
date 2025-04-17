@@ -1,18 +1,21 @@
 #!/bin/bash
 
-# Any lines containing this marker will be removed from the crontab
-MARKER="get_metrics.sh"
+# List of substrings to search for and remove from crontab
+MARKERS=("get_metrics.sh" "scale.sh")
 
 # Backup existing crontab
 crontab -l > current_cron.bak 2>/dev/null
 
-# Remove lines containing the marker
-grep -v "$MARKER" current_cron.bak > new_cron.bak
+# Join markers into a single regex pattern separated by "|"
+PATTERN=$(IFS="|"; echo "${MARKERS[*]}")
+
+# Remove lines that match any marker
+grep -Ev "$PATTERN" current_cron.bak > new_cron.bak
 
 # Apply the updated crontab
 crontab new_cron.bak
 
-# Rm temp files
+# Cleanup
 rm current_cron.bak new_cron.bak
 
-echo "Crontab entries related to '$MARKER' have been removed."
+echo "Crontab entries containing any of the specified markers have been removed."
