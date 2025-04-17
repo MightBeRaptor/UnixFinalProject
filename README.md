@@ -8,3 +8,8 @@ This is designed to be ran on a Google Cloud Platform (GCP) ubuntu Virtual Machi
 3. Run `bash src/scripts/setup.sh` which will install all dependencies (Docker, LVM) and launch docker
 4. Run `bash src/scripts/launch.sh` which will compose down existing containers (if previously ran) and compose up 3 copies of the application.
 5. Open url `<vm's-external-ip>` in your favorite browser
+
+## Utilities
+* Run `sudo grep CRON /var/log/syslog` to confirm the crontab ran both `get_metrics.sh` and `scale.sh`
+* Run `cat /var/mail/your-username` to read any error messages that were mailed to you
+* Run `cat data/metrics.txt` to view the CPU (%) last detected
