@@ -6,6 +6,8 @@ if ! docker stack ls | grep -q mystack; then
   exit 1
 fi
 
+touch data/metrics.txt # Create the metrics file if it doesn't exist
+
 # Get all container IDs for the web service
 containers=$(docker ps --filter "name=mystack_web" --format "{{.ID}}")
 
