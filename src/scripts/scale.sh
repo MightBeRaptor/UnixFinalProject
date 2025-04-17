@@ -3,7 +3,7 @@
 # Ensure REPO_PATH is passed as an argument
 if [ -z "$1" ]; then
   echo "Usage: $0 <REPO_PATH>"
-  exit 1
+  exit 2
 fi
 
 REPO_PATH="$1"
@@ -11,7 +11,7 @@ REPO_PATH="$1"
 # Ensure stack is running
 if ! docker stack ls | grep -q mystack; then
     echo "Stack 'mystack' is not running. Exiting."
-    exit 1
+    exit 3
 fi
 
 METRICS_FILE="$REPO_PATH/data/metrics.txt"
@@ -19,7 +19,7 @@ METRICS_FILE="$REPO_PATH/data/metrics.txt"
 # Check if the metrics file exists
 if [ ! -f "$METRICS_FILE" ]; then
     echo "No metrics file found at $METRICS_FILE"
-    exit 1
+    exit 4
 fi
 
 # Read and validate average CPU usage
