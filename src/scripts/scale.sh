@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Load environment variables from .env
-if [ -f .env ]; then
-    export $(grep -v '^#' .env | xargs)
-else
-    echo ".env file not found."
-    exit 1
-fi
-
 # Ensure REPO_PATH is set
 if [ -z "$REPO_PATH" ]; then
     echo "REPO_PATH variable is not set in .env."
