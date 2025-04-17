@@ -19,7 +19,6 @@ mkdir -p "$REPO_PATH/data"  # Ensure data directory exists
 touch "$METRICS_FILE"       # Create the metrics file if it doesn't exist
 
 # Clear and recreate log
-mkdir -p "$REPO_PATH/logs"  # Ensure logs directory exists
 rm -f "$REPO_PATH/logs/script_output.log"  # Remove old log file
 touch "$REPO_PATH/logs/script_output.log"  # Create new log file
 
