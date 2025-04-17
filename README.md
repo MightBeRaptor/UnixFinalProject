@@ -15,5 +15,7 @@ This is designed to be ran on a Google Cloud Platform (GCP) ubuntu Virtual Machi
 ## Utilities
 * Run `sudo grep CRON /var/log/syslog` to confirm the crontab ran both `get_metrics.sh` and `scale.sh`
 * Run `cat /var/mail/your-username` to read any error messages that were mailed to you
-* Run `cat data/metrics.txt` to view the CPU (%) last detected
+* After the crontab is added and the scripts have finished, run `cat data/metrics.txt` to view the CPU (%) last detected
+* After the crontab is added and the scripts have finished, run `cat logs/scale.log` to view the last logged output by `scale.sh`, noting how if it was scaled up, down, not at all, and the current CPU (%) usage
 * Run `bash src/scripts/remove_crontab.sh` to remove the existing crontab and stop autoscaling
+* Run `docker stack rm mystack` to stop the application entirely. To restart, run `launch.sh` again
