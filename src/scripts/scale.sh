@@ -49,4 +49,10 @@ if [ "$num_replicas" -eq 0 ]; then
     exit 0
 fi
 
-echo "Successfully autoscaled to $num_replicas replicas due to an average CPU usage of $avg."
+
+
+output_str="Successfully autoscaled to $num_replicas replicas due to an average CPU usage of $avg."
+
+# Log the output to logs/scale.log and echo to console
+echo "$output_str" | tee -a "$REPO_PATH/logs/scale.log" # append to log
+echo "$output_str"
