@@ -44,10 +44,3 @@ fi
 
 # Output to metrics file
 echo "$avg" > "$METRICS_FILE"
-
-# Run scale.sh
-bash "$REPO_PATH/src/scripts/scale.sh \"$REPO_PATH\""
-if [ $? -ne 0 ]; then
-    echo "Failed scale.sh with error message $?"
-    exit 1
-fi
