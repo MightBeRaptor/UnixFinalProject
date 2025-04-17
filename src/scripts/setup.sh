@@ -11,5 +11,6 @@ fi
 sudo usermod -aG docker $USER # Add user to docker group so sudo prefix isn't needed
 
 mkdir -p data  # Ensure the data directory exists
+mkdir -p logs # Ensure the logs directory exists
 
 docker swarm init
