@@ -17,6 +17,7 @@ fi
 # Define script paths
 METRICS_SCRIPT="$REPO_PATH/src/scripts/get_metrics.sh"
 SCALE_SCRIPT="$REPO_PATH/src/scripts/scale.sh"
+ERROR_LOG="$REPO_PATH/logs/errors.txt"
 CRON_LINE="*/2 * * * * /bin/bash $METRICS_SCRIPT && /bin/bash $SCALE_SCRIPT 2>> $ERROR_LOG"
 
 # Backup current crontab if it exists
