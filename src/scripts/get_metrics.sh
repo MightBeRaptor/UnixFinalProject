@@ -46,7 +46,9 @@ fi
 echo "$avg" > "$METRICS_FILE"
 
 # Run scale.sh
-bash "$REPO_PATH/src/scripts/scale.sh" "$REPO_PATH"
+command_to_run="$REPO_PATH/src/scripts/scale.sh $REPO_PATH"
+echo "Running command: $command_to_run"
+bash "$command_to_run"
 if [ $? -ne 0 ]; then
     echo "Failed to run scale.sh"
     exit 1
