@@ -12,13 +12,16 @@ if ! docker stack ls | grep -q mystack; then
     exit 1
 fi
 
-# Read average CPU usage
-if [ ! -f $REPO_PATH/data/metrics.txt ]; then
-    echo "No metrics found."
+METRICS_FILE="$REPO_PATH/data/metrics.txt"
+
+# Check if the metrics file exists
+if [ ! -f "$METRICS_FILE" ]; then
+    echo "No metrics file found at $METRICS_FILE"
     exit 1
 fi
 
-avg=$(cat $REPO_PATH/data/metrics.txt)
+# Read and validate average CPU usage
+avg=$(cat "$METRICS_FILE")
 
 # Apply scaling logic
 if [ "$avg" -gt 70 ]; then
@@ -37,5 +40,5 @@ else
     echo "CPU usage ${avg}% within acceptable range. No scaling needed."
 fi
 
-echo "Successfully autoscaled to $num_replicas replicas."
+echo "Successfully autoscaled to $num_replicas replicas due to an average CPU usage of $avg."
 exit 1 # logging purposes for now
