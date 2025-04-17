@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Wait 30 seconds for get_metrics.sh to finish
+sleep 30
+
 # Ensure REPO_PATH is passed as an argument
 if [ -z "$1" ]; then
   echo "Usage: $0 <REPO_PATH>"
@@ -24,6 +27,10 @@ fi
 
 # Read and validate average CPU usage
 avg=$(cat "$METRICS_FILE")
+if ! [[ "$avg" =~ ^[0-9]+$ ]]; then
+    echo "Invalid CPU usage value: $avg"
+    exit 5
+fi
 
 num_replicas=0
 
