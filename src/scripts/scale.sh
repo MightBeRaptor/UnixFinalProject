@@ -49,12 +49,7 @@ if [ "$num_replicas" -eq 0 ]; then
     exit 0
 fi
 
-
-
+# Log output
 output_str="Successfully autoscaled to $num_replicas replicas due to an average CPU usage of $avg."
-
-# Log the output to logs/scale.log and echo to console
-mkdir -p "$REPO_PATH/logs"  # Ensure logs directory exists
-touch "$REPO_PATH/logs/scale.log" # create log file if it doesn't exist
-echo "$output_str" | tee -a "$REPO_PATH/logs/scale.log" # append to log
+echo "$output_str" > "$REPO_PATH/data/scale.log"
 echo "$output_str"
