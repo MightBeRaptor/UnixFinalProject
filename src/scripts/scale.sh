@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Ensure REPO_PATH is set
-if [ -z "$REPO_PATH" ]; then
-    echo "REPO_PATH variable is not set in .env."
-    exit 1
+# Ensure REPO_PATH is passed as an argument
+if [ -z "$1" ]; then
+  echo "Usage: $0 <REPO_PATH>"
+  exit 1
 fi
 
 # Ensure stack is running
