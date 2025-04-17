@@ -50,7 +50,7 @@ fi
 echo "$avg" > "$METRICS_FILE"
 
 # Run scale.sh
-bash "$REPO_PATH/src/scripts/scale.sh \"$REPO_PATH\" >> \"$REPO_PATH\"/logs/script_output.log 2>&1"
+bash "$REPO_PATH/src/scripts/scale.sh \"$REPO_PATH\" >> $REPO_PATH/logs/script_output.log 2>&1"
 if [ $? -ne 0 ]; then
     echo "Failed scale.sh"
     exit 1
