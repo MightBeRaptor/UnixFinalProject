@@ -4,5 +4,8 @@
 containers=$(docker ps --filter "name=mystack_web" --format "{{.ID}}")
 
 for container in $containers; do
-    # Get CPU usage for each container
-    docker exec $container stress-ng --cpu $(nproc) -t 60s
+    # Get number of CPUs inside the container
+    container_cpus=$(docker exec "$container" nproc)
+
+    # Run stress test inside container
+    docker exec "$container" stress-ng --cpu "$container_cpus" -t 60s
