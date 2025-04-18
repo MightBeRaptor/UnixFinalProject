@@ -1,3 +1,3 @@
 #!/bin/bash
 
-stress-ng --cpu $(nproc) --timeout 300s
+stress-ng --cpu $(nproc) -t 5m
