@@ -10,6 +10,7 @@ This is designed to be ran on a Google Cloud Platform (GCP) ubuntu Virtual Machi
 4. Run `bash src/scripts/launch.sh` which will compose down existing containers (if previously ran) and compose up 3 copies of the application
 5. Open url `<vm's-external-ip>` in your favorite browser
 6. When ready, run `bash src/scripts/add_crontab.sh` to start autoscaling from 3 to 6 replicas depending on the CPU %
+7. Optionally, stress all active containers for 60 seconds by running `bash src/scripts/stress.sh` to prove that the CPU % is tracked and replicas scaled
 
 
 ## Utilities
